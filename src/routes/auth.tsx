@@ -9,9 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({
-    redirect: typeof s.redirect === "string" && s.redirect.startsWith("/") ? s.redirect : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): { redirect?: string | undefined } => {
+    const r = s["redirect"];
+    return { redirect: typeof r === "string" && r.startsWith("/") ? r : undefined };
+  },
   head: () => ({
     meta: [
       { title: "Connexion — Salle des Coffres" },
