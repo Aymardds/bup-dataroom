@@ -73,7 +73,7 @@ export function Shell({ children, right }: { children: ReactNode; right?: ReactN
 export function initials(s?: string | null) {
   if (!s) return "?";
   const parts = s.replace(/@.*/, "").split(/[\s._-]+/).filter(Boolean);
-  return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase() || s[0].toUpperCase();
+  return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase() || (s[0] ?? "?").toUpperCase();
 }
 
 export const PURPOSES: Record<string, string> = {

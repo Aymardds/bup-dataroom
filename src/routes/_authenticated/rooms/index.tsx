@@ -51,9 +51,12 @@ function RoomsPage() {
       .insert({ name, purpose, description, owner_id: user.id })
       .select()
       .single();
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     await supabase.from("folders").insert(DEFAULT_FOLDERS.map((n, i) => ({ room_id: data.id, name: n, position: i })));
-    await supabase.from("activity_logs").insert({ room_id: data.id, user_id: user.id, actor_name: user.email, action: "a créé la data room", target: name });
+    await supabase.from("activity_logs").insert({ room_id: data.id, user_id: user.id, actor_name: user.email ?? null, action: "a créé la data room", target: name });
     qc.invalidateQueries({ queryKey: ["rooms"] });
     setOpen(false);
     navigate({ to: "/rooms/$roomId", params: { roomId: data.id } });
