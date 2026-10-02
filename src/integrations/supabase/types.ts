@@ -14,13 +14,233 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activity_logs: {
+        Row: {
+          action: string
+          actor_name: string | null
+          created_at: string
+          id: string
+          room_id: string
+          target: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_name?: string | null
+          created_at?: string
+          id?: string
+          room_id: string
+          target?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_name?: string | null
+          created_at?: string
+          id?: string
+          room_id?: string
+          target?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_logs_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "data_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      data_rooms: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          owner_id: string
+          purpose: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          owner_id?: string
+          purpose?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          owner_id?: string
+          purpose?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          created_at: string
+          folder_id: string | null
+          id: string
+          mime_type: string | null
+          name: string
+          room_id: string
+          size_bytes: number
+          storage_path: string
+          uploaded_by: string | null
+          view_count: number
+        }
+        Insert: {
+          created_at?: string
+          folder_id?: string | null
+          id?: string
+          mime_type?: string | null
+          name: string
+          room_id: string
+          size_bytes?: number
+          storage_path: string
+          uploaded_by?: string | null
+          view_count?: number
+        }
+        Update: {
+          created_at?: string
+          folder_id?: string | null
+          id?: string
+          mime_type?: string | null
+          name?: string
+          room_id?: string
+          size_bytes?: number
+          storage_path?: string
+          uploaded_by?: string | null
+          view_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "folders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "data_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      folders: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          position: number
+          room_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          position?: number
+          room_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          position?: number
+          room_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "folders_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "data_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      room_members: {
+        Row: {
+          can_download: boolean
+          created_at: string
+          email: string
+          id: string
+          organization: string | null
+          party_type: string
+          role: string
+          room_id: string
+          status: string
+        }
+        Insert: {
+          can_download?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          organization?: string | null
+          party_type?: string
+          role?: string
+          room_id: string
+          status?: string
+        }
+        Update: {
+          can_download?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          organization?: string | null
+          party_type?: string
+          role?: string
+          room_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "room_members_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "data_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_download: { Args: { _room: string }; Returns: boolean }
+      record_view: { Args: { _doc: string }; Returns: undefined }
+      room_role: { Args: { _room: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never
