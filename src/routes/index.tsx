@@ -1,24 +1,58 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Shell, Pill } from "@/components/vault/Shell";
+import { Button } from "@/components/ui/button";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Salle des Coffres — Data room virtuelle sécurisée" },
+      { name: "description", content: "Centralisez vos documents confidentiels et partagez-les avec investisseurs, banques, avocats et acquéreurs, en toute traçabilité." },
+      { property: "og:title", content: "Salle des Coffres — Data room virtuelle sécurisée" },
+      { property: "og:description", content: "Levées de fonds, due diligence, cessions : une data room avec droits d'accès et journal d'audit." },
+    ],
+  }),
+  component: Landing,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+const USES = [
+  ["Levée de fonds", "Les investisseurs examinent l'entreprise avant d'investir."],
+  ["Due diligence", "Vérification juridique, financière, commerciale et technique."],
+  ["Acquisition / cession", "L'acquéreur analyse la société en toute confidentialité."],
+  ["Financement bancaire", "Dossier complet partagé avec votre banque."],
+];
+
+function Landing() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) navigate({ to: "/rooms" });
+    });
+  }, [navigate]);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <Shell right={<><Pill>Accès contrôlé</Pill><Pill tone="primary">Journal d'audit</Pill></>}>
+      <div className="glass-panel p-10 md:p-14">
+        <div className="eyebrow mb-3">Data room virtuelle</div>
+        <h1 className="max-w-2xl text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
+          Vos documents confidentiels, partagés sous scellé.
+        </h1>
+        <p className="mt-4 max-w-xl text-muted-foreground">
+          Créez une salle par opération, rangez les pièces par dossier, invitez chaque partie avec ses droits, et suivez qui consulte quoi.
+        </p>
+        <Button asChild variant="hero" size="lg" className="mt-8">
+          <Link to="/auth">Ouvrir ma salle des coffres</Link>
+        </Button>
+      </div>
+      <div className="mt-6 grid gap-6 md:grid-cols-4">
+        {USES.map(([t, d]) => (
+          <div key={t} className="glass-panel p-6">
+            <div className="text-[15px] font-semibold">{t}</div>
+            <p className="mt-2 text-[13px] text-muted-foreground">{d}</p>
+          </div>
+        ))}
+      </div>
+    </Shell>
   );
 }
