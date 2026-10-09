@@ -15,9 +15,9 @@ export const Route = createFileRoute("/auth")({
   },
   head: () => ({
     meta: [
-      { title: "Connexion — Salle des Coffres" },
+      { title: "Connexion — Business Sacal Room" },
       { name: "description", content: "Connectez-vous pour accéder à vos data rooms." },
-      { property: "og:title", content: "Connexion — Salle des Coffres" },
+      { property: "og:title", content: "Connexion — Business Sacal Room" },
       { property: "og:description", content: "Accès sécurisé à vos data rooms." },
     ],
   }),
