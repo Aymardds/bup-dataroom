@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Salle des Coffres — Data room virtuelle sécurisée" },
+      { title: "Business Sacal Room — Data room virtuelle sécurisée" },
       { name: "description", content: "Centralisez vos documents confidentiels et partagez-les avec investisseurs, banques, avocats et acquéreurs, en toute traçabilité." },
-      { property: "og:title", content: "Salle des Coffres — Data room virtuelle sécurisée" },
+      { property: "og:title", content: "Business Sacal Room — Data room virtuelle sécurisée" },
       { property: "og:description", content: "Levées de fonds, due diligence, cessions : une data room avec droits d'accès et journal d'audit." },
     ],
   }),
@@ -42,7 +42,7 @@ function Landing() {
           Créez une salle par opération, rangez les pièces par dossier, invitez chaque partie avec ses droits, et suivez qui consulte quoi.
         </p>
         <Button asChild variant="hero" size="lg" className="mt-8">
-          <Link to="/auth">Ouvrir ma salle des coffres</Link>
+          <Link to="/auth">Ouvrir ma data room</Link>
         </Button>
       </div>
       <div className="mt-6 grid gap-6 md:grid-cols-4">

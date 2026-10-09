@@ -21,7 +21,7 @@ export function Logo() {
         ◆
       </div>
       <div>
-        <div className="text-lg font-semibold tracking-tight">Salle des Coffres</div>
+        <div className="text-lg font-semibold tracking-tight">Business Sacal Room</div>
         <div className="eyebrow">Data room virtuelle</div>
       </div>
     </Link>

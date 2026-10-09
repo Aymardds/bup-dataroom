@@ -68,7 +68,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Salle des Coffres — Data room virtuelle" },
+      { title: "Business Sacal Room — Data room virtuelle" },
       { name: "description", content: "Plateforme de data room sécurisée pour levées de fonds, due diligence et cessions." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
