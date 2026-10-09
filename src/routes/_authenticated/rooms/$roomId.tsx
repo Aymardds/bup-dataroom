@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Shell, Pill, SignOutButton, PURPOSES, ROLES, PARTIES, initials } from "@/components/vault/Shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { RoomStats } from "@/components/vault/RoomStats";
 
 type Tab = "overview" | "documents" | "audience" | "journal";
 
@@ -236,6 +237,7 @@ function RoomPage() {
                   ))}
                 </div>
               </div>
+              <RoomStats logs={d.logs} docs={d.docs} folders={d.folders} members={d.members} />
               <div className="glass-panel p-6"><div className="mb-4 text-[15px] font-semibold">Documents confidentiels</div>{DocTable}</div>
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="glass-panel p-6"><div className="mb-4 flex justify-between"><div className="text-[15px] font-semibold">Journal d'audit</div><div className="eyebrow text-accent">Traçabilité</div></div>{Journal(5)}</div>
