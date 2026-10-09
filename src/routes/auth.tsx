@@ -15,9 +15,9 @@ export const Route = createFileRoute("/auth")({
   },
   head: () => ({
     meta: [
-      { title: "Connexion — Salle des Coffres" },
+      { title: "Connexion — Business Sacal Room" },
       { name: "description", content: "Connectez-vous pour accéder à vos data rooms." },
-      { property: "og:title", content: "Connexion — Salle des Coffres" },
+      { property: "og:title", content: "Connexion — Business Sacal Room" },
       { property: "og:description", content: "Accès sécurisé à vos data rooms." },
     ],
   }),
@@ -76,7 +76,7 @@ function AuthPage() {
     <Shell>
       <div className="mx-auto max-w-md glass-panel p-8">
         <div className="eyebrow mb-1">{mode === "in" ? "Connexion" : "Création de compte"}</div>
-        <h1 className="text-[26px] font-semibold tracking-tight">Accéder aux coffres</h1>
+        <h1 className="text-[26px] font-semibold tracking-tight">Accéder à vos data rooms</h1>
         <p className="mt-1 text-[13px] text-muted-foreground">
           Invité dans une data room ? Utilisez l'adresse e-mail qui a reçu l'invitation.
         </p>

@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_authenticated/rooms/$roomId")({
     const t = s["tab"];
     return { tab: ["overview", "documents", "audience", "journal"].includes(t as string) ? (t as Tab) : undefined };
   },
-  head: () => ({ meta: [{ title: "Data room — Salle des Coffres" }] }),
+  head: () => ({ meta: [{ title: "Data room — Business Sacal Room" }] }),
   component: RoomPage,
 });
 

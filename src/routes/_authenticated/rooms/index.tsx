@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export const Route = createFileRoute("/_authenticated/rooms/")({
   head: () => ({
     meta: [
-      { title: "Mes data rooms — Salle des Coffres" },
+      { title: "Mes data rooms — Business Sacal Room" },
       { name: "description", content: "Toutes vos data rooms : levées de fonds, due diligence, cessions." },
     ],
   }),
