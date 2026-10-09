@@ -30,6 +30,7 @@ function RoomPage() {
   const [party, setParty] = useState("investisseur");
   const [role, setRole] = useState("viewer");
   const [dl, setDl] = useState(false);
+  const [newFolder, setNewFolder] = useState("");
 
   const q = useQuery({
     queryKey: ["room", roomId],
@@ -96,6 +97,32 @@ function RoomPage() {
     await log("a invité", email);
     toast.success("Invitation enregistrée — la personne doit créer un compte avec cet e-mail.");
     setEmail(""); setOrg("");
+    refresh();
+  }
+
+  async function createFolder(e: React.FormEvent) {
+    e.preventDefault();
+    const name = newFolder.trim();
+    if (!name) return;
+    const { error } = await supabase.from("folders").insert({ room_id: roomId, name, position: d.folders.length });
+    if (error) { toast.error(error.message); return; }
+    await log("a créé le dossier", name);
+    setNewFolder("");
+    refresh();
+  }
+
+  async function deleteFolder(id: string, name: string) {
+    if (!confirm(`Supprimer le dossier « ${name} » ? Les documents passeront dans « Sans dossier ».`)) return;
+    await supabase.from("folders").delete().eq("id", id);
+    await log("a supprimé le dossier", name);
+    if (folder === id) setFolder(null);
+    refresh();
+  }
+
+  async function moveDoc(id: string, folderId: string | null, name: string) {
+    const { error } = await supabase.from("documents").update({ folder_id: folderId }).eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    await log("a déplacé", `${name} → ${folderName(folderId)}`);
     refresh();
   }
 
@@ -218,17 +245,69 @@ function RoomPage() {
           )}
 
           {tab === "documents" && (
-            <div className="glass-panel p-6">
-              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap gap-2">
-                  <button onClick={() => setFolder(null)} className={`rounded-lg px-3 py-1.5 text-[12px] ${folder === null ? "bg-primary text-primary-foreground" : "border border-line/25 bg-card/60 text-muted-foreground"}`}>Tous</button>
-                  {d.folders.map((f) => (
-                    <button key={f.id} onClick={() => setFolder(f.id)} className={`rounded-lg px-3 py-1.5 text-[12px] ${folder === f.id ? "bg-primary text-primary-foreground" : "border border-line/25 bg-card/60 text-muted-foreground"}`}>{f.name}</button>
-                  ))}
-                </div>
-                {canEdit && <Button variant="hero" onClick={() => fileRef.current?.click()}>+ Déposer {folder ? `dans ${folderName(folder)}` : ""}</Button>}
+            <div className="grid gap-6 md:grid-cols-[240px_1fr]">
+              <div className="glass-panel h-fit p-4">
+                <div className="eyebrow mb-3">Arborescence</div>
+                <button onClick={() => setFolder(null)} className={`flex w-full items-center rounded-xl px-3 py-2 text-[13px] ${folder === null ? "bg-primary/10 font-medium text-primary" : "text-muted-foreground hover:bg-card/70"}`}>
+                  ▦ Tous les documents<span className="ml-auto text-[10px]">{d.docs.length}</span>
+                </button>
+                {d.folders.map((f) => (
+                  <div key={f.id} className="group flex items-center">
+                    <button onClick={() => setFolder(f.id)} className={`flex flex-1 items-center rounded-xl px-3 py-2 text-[13px] ${folder === f.id ? "bg-primary/10 font-medium text-primary" : "text-muted-foreground hover:bg-card/70"}`}>
+                      ▸ {f.name}<span className="ml-auto text-[10px]">{d.docs.filter((x) => x.folder_id === f.id).length}</span>
+                    </button>
+                    {isAdmin && (
+                      <button title="Supprimer le dossier" className="px-1 text-[11px] text-destructive opacity-0 group-hover:opacity-100" onClick={() => deleteFolder(f.id, f.name)}>✕</button>
+                    )}
+                  </div>
+                ))}
+                {canEdit && (
+                  <form onSubmit={createFolder} className="mt-3 flex gap-2">
+                    <Input placeholder="Nouveau dossier" value={newFolder} onChange={(e) => setNewFolder(e.target.value)} className="h-8 text-[12px]" />
+                    <Button type="submit" size="sm" variant="hero">+</Button>
+                  </form>
+                )}
               </div>
-              {DocTable}
+              <div className="glass-panel p-6">
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <div className="eyebrow">Dossier</div>
+                    <div className="text-[18px] font-semibold">{folder ? folderName(folder) : "Tous les documents"}</div>
+                  </div>
+                  {canEdit && <Button variant="hero" onClick={() => fileRef.current?.click()}>+ Déposer {folder ? `dans ${folderName(folder)}` : ""}</Button>}
+                </div>
+                {folder ? DocTable : (
+                  <div className="space-y-6">
+                    {[...d.folders.map((f) => ({ id: f.id as string | null, name: f.name })), { id: null, name: "Sans dossier" }].map((f) => {
+                      const docs = d.docs.filter((x) => x.folder_id === f.id);
+                      if (f.id === null && docs.length === 0) return null;
+                      return (
+                        <div key={f.id ?? "none"}>
+                          <button onClick={() => f.id && setFolder(f.id)} className="mb-2 flex items-center gap-2 text-[13px] font-semibold hover:text-primary">
+                            ▸ {f.name} <span className="text-[11px] font-normal text-muted-foreground">{docs.length} document(s)</span>
+                          </button>
+                          <div className="glass-inset overflow-hidden">
+                            {docs.length === 0 && <div className="px-4 py-3 text-[12px] text-muted-foreground">Dossier vide.</div>}
+                            {docs.map((doc) => (
+                              <div key={doc.id} className="flex items-center gap-3 border-b border-line/15 px-4 py-2.5 text-[13px] last:border-0 hover:bg-primary/5">
+                                <span className="truncate font-medium">{doc.name}</span>
+                                <span className="ml-auto text-[11px] text-muted-foreground">{doc.view_count} vues</span>
+                                {canEdit && (
+                                  <select className="rounded-md border border-input bg-card px-1 text-[11px]" value={doc.folder_id ?? ""} onChange={(e) => moveDoc(doc.id, e.target.value || null, doc.name)}>
+                                    <option value="">Sans dossier</option>
+                                    {d.folders.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
+                                  </select>
+                                )}
+                                <button className="text-[12px] text-primary" onClick={() => open(doc, false)}>Ouvrir</button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
