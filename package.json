@@ -11,12 +11,14 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "db:apply": "node scripts/apply-schema.mjs"
   },
   "overrides": {
     "rolldown": "1.2.1"
   },
   "dependencies": {
+    "@emailjs/browser": "^5.0.3",
     "@hookform/resolvers": "^5.2.2",
     "@lovable.dev/cloud-auth-js": "^1.1.2",
     "@radix-ui/react-accordion": "^1.2.12",
@@ -95,7 +97,7 @@
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "8.1.5",
+    "vite": "^8.1.5",
     "vitest": "^4.1.10"
   }
 }

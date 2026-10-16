@@ -1,4 +1,4 @@
-# Found Office
+# BUP (Business Up) — Virtual Data Room
 
 Une data room (ou salle de données virtuelle — VDR, Virtual Data Room) est un espace numérique sécurisé dans lequel une entreprise centralise des documents confidentiels afin de les partager avec des personnes autorisées : investisseurs, banques, partenaires, auditeurs, avocats, acquéreurs, etc.
 
