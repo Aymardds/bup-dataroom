@@ -16,12 +16,26 @@ export function Backdrop() {
 
 export function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-3">
-      <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-brand text-lg font-semibold text-primary-foreground shadow-brand">
-        ◆
+    <Link to="/" className="group flex items-center gap-3">
+      <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl border border-line/40 bg-card/90 p-1.5 shadow-brand transition duration-200 group-hover:scale-105 group-hover:border-primary/50">
+        <img
+          src="/icone-128.png"
+          alt="BUP"
+          width={44}
+          height={44}
+          loading="eager"
+          decoding="async"
+          className="h-full w-full object-contain"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = "/icone.png";
+          }}
+        />
       </div>
       <div>
-        <div className="text-lg font-semibold tracking-tight">Business Sacal Room</div>
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-lg font-bold tracking-tight text-foreground">BUP</span>
+          <span className="text-xs font-semibold text-primary">Business Up</span>
+        </div>
         <div className="eyebrow">Data room virtuelle</div>
       </div>
     </Link>

@@ -10,5 +10,13 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
 User-agent: *
 Allow: /
+
+Sitemap: https://found-office.lovable.app/sitemap.xml

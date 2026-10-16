@@ -14,8 +14,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export const Route = createFileRoute("/_authenticated/rooms/")({
   head: () => ({
     meta: [
-      { title: "Mes data rooms — Business Sacal Room" },
-      { name: "description", content: "Toutes vos data rooms : levées de fonds, due diligence, cessions." },
+      { title: "Mes data rooms — BUP (Business Up)" },
+      { name: "description", content: "Toutes vos data rooms BUP : levées de fonds, due diligence, cessions." },
     ],
   }),
   component: RoomsPage,
@@ -104,7 +104,20 @@ function RoomsPage() {
         )}
         {rooms.data?.map((r) => (
           <Link key={r.id} to="/rooms/$roomId" params={{ roomId: r.id }} search={{ tab: "overview" }} className="glass-panel block p-6 transition hover:-translate-y-0.5">
-            <div className="eyebrow">{PURPOSES[r.purpose] ?? r.purpose}</div>
+            <div className="flex items-center justify-between gap-3">
+              <div className="eyebrow">{PURPOSES[r.purpose] ?? r.purpose}</div>
+              <div className="flex h-6 w-6 items-center justify-center rounded-md border border-line/40 bg-card/80 p-0.5">
+                <img
+                  src="/icone-128.png"
+                  alt="BUP"
+                  width={24}
+                  height={24}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            </div>
             <div className="mt-1 text-[18px] font-semibold leading-tight">{r.name}</div>
             {r.description && <p className="mt-1 line-clamp-2 text-[13px] text-muted-foreground">{r.description}</p>}
             <div className="mt-4 flex gap-3 text-[12px] text-muted-foreground">

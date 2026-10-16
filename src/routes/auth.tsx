@@ -15,10 +15,10 @@ export const Route = createFileRoute("/auth")({
   },
   head: () => ({
     meta: [
-      { title: "Connexion — Business Sacal Room" },
-      { name: "description", content: "Connectez-vous pour accéder à vos data rooms." },
-      { property: "og:title", content: "Connexion — Business Sacal Room" },
-      { property: "og:description", content: "Accès sécurisé à vos data rooms." },
+      { title: "Connexion — BUP (Business Up)" },
+      { name: "description", content: "Connectez-vous pour accéder à vos data rooms BUP." },
+      { property: "og:title", content: "Connexion — BUP (Business Up)" },
+      { property: "og:description", content: "Accès sécurisé à vos data rooms BUP (Business Up)." },
     ],
   }),
   component: AuthPage,
@@ -75,9 +75,22 @@ function AuthPage() {
   return (
     <Shell>
       <div className="mx-auto max-w-md glass-panel p-8">
-        <div className="eyebrow mb-1">{mode === "in" ? "Connexion" : "Création de compte"}</div>
-        <h1 className="text-[26px] font-semibold tracking-tight">Accéder à vos data rooms</h1>
-        <p className="mt-1 text-[13px] text-muted-foreground">
+        <div className="mb-5 flex justify-center">
+          <div className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border border-line/40 bg-card/90 p-2 shadow-brand">
+            <img
+              src="/icone-128.png"
+              alt="BUP"
+              width={56}
+              height={56}
+              loading="eager"
+              decoding="async"
+              className="h-full w-full object-contain"
+            />
+          </div>
+        </div>
+        <div className="eyebrow mb-1 text-center">{mode === "in" ? "Connexion" : "Création de compte"}</div>
+        <h1 className="text-center text-[26px] font-semibold tracking-tight">Accéder à BUP</h1>
+        <p className="mt-1 text-center text-[13px] text-muted-foreground">
           Invité dans une data room ? Utilisez l'adresse e-mail qui a reçu l'invitation.
         </p>
         <form onSubmit={submit} className="mt-6 space-y-4">

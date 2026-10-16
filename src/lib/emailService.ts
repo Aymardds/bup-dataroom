@@ -2,14 +2,14 @@ import emailjs from "@emailjs/browser";
 
 export interface RoomInvitationParams {
   toEmail: string;
-  toName?: string;
-  organization?: string;
+  toName?: string | undefined;
+  organization?: string | undefined;
   roomName: string;
   roomPurpose: string;
   roleName: string;
   canDownload: boolean;
-  inviterName?: string;
-  inviterEmail?: string;
+  inviterName?: string | undefined;
+  inviterEmail?: string | undefined;
   accessUrl: string;
 }
 
@@ -186,9 +186,10 @@ export function generateInvitationHtml(params: RoomInvitationParams): string {
  * Envoie un email d'invitation à une Data Room via EmailJS.
  */
 export async function sendRoomInvitation(params: RoomInvitationParams): Promise<EmailResult> {
-  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID?.trim();
-  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID?.trim();
-  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY?.trim();
+  const env = import.meta.env as Record<string, string | undefined>;
+  const serviceId = env["VITE_EMAILJS_SERVICE_ID"]?.trim();
+  const templateId = env["VITE_EMAILJS_TEMPLATE_ID"]?.trim();
+  const publicKey = env["VITE_EMAILJS_PUBLIC_KEY"]?.trim();
 
   if (!serviceId || !templateId || !publicKey) {
     console.warn("[EmailJS] Variables non configurées dans .env");
@@ -203,7 +204,7 @@ export async function sendRoomInvitation(params: RoomInvitationParams): Promise<
 
   const templateParams: Record<string, string> = {
     to_email: params.toEmail,
-    to_name: params.toName || params.organization || params.toEmail.split("@")[0],
+    to_name: params.toName || params.organization || params.toEmail.split("@")[0] || "Invité",
     organization: params.organization || "Partenaire",
     room_name: params.roomName,
     room_purpose: params.roomPurpose,
